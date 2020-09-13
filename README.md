@@ -2,6 +2,9 @@
 ### Steps to recreate
  SPIN UP a POSTGRE server using DOCKER
  
+ Please refer this to spin up an instance
+ <a>https://github.com/vijayakumar-psg587/Docker-duncan/blob/master/postgre/docker-compose.yml</a>
+ 
  If the entities need to be created, then turn on <b>Synchronize</b> in typeORM if necessary
  
  Else create tables referring to the database folder
