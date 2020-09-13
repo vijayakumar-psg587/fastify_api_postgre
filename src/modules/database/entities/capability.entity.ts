@@ -1,11 +1,13 @@
 import {UpdatableEntity} from "./updatable.entity";
-import {Column, Entity, ManyToMany, PrimaryGeneratedColumn} from "typeorm/index";
+import {Column, Entity, ManyToMany, PrimaryColumn, PrimaryGeneratedColumn} from "typeorm/index";
 
 @Entity({name: 't_capability'})
 export class CapabilityEntity extends  UpdatableEntity{
-    @PrimaryGeneratedColumn({
+    @PrimaryColumn({
         type: "uuid",
-        name: 'id'
+        generated: "uuid",
+        name: 'id',
+        nullable: false
     })
     id: string;
 

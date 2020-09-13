@@ -1,12 +1,14 @@
-import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm/index";
+import {Column, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn} from "typeorm/index";
 import {UpdatableEntity} from "./updatable.entity";
 import {UserRoleEnum} from "../models/enums/user-role.enum";
 
 @Entity({name:'t_associate'})
 export class AssociateEntity extends UpdatableEntity{
-    @PrimaryGeneratedColumn({
+    @PrimaryColumn({
         type: "uuid",
-        name: 'id'
+        generated: "uuid",
+        name: 'id',
+        nullable: false
     })
     id: string;
 

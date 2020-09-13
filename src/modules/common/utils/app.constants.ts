@@ -35,5 +35,14 @@ export const APP_CONSTANTS = {
     REGEX: {
         USER: /^[aA]{1}[\d]{6}$/,
         EMAIL: /^[a-zA-Z0-9]+\@[a-zA-Z0-9]+.com$/
+    },
+    DECORATORS: {
+        REQ: {
+            CAP_TYPE_CREATE : 'capabilityTypeCreate',
+            ASSOCIATE_CREATE : 'associateCreate'
+        },
+        RES: {
+            CAP_TYPE_DETAIL : 'CapabilityTypeDetail'
+        }
     }
 };

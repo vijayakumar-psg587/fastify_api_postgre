@@ -1,4 +1,9 @@
 import { CommonModel } from "../models/common.model";
+import {APP_CONSTANTS} from "../utils/app.constants";
+import {CustomErrorModel} from "../models/custom-error.model";
+import {AppUtilService} from "./app-util.service";
+
+import {ValidationError} from "class-validator";
 
 export class AppConfigService {
   constructor() {}
@@ -28,27 +33,27 @@ export class AppConfigService {
   //     .build();
   // }
 
-  // static getCustomError(code: string, message: string) {
-  //   const customError = new CustomErrorModel();
-  //   customError.code = code;
-  //   if (
-  //     !AppUtilService.isNullOrUndefined(code) &&
-  //     (code.includes("DB") ||
-  //       code.includes("REQ") ||
-  //       code.includes("CUSTOM") ||
-  //       code.includes("FILE"))
-  //   ) {
-  //     customError.status = 500;
-  //   } else if (
-  //     (!AppUtilService.isNullOrUndefined(code) && code.includes("HEADER")) ||
-  //     code.includes("VALIDATION")
-  //   ) {
-  //     customError.status = 400;
-  //   }
-  //   customError.message = message;
-  //   customError.timestamp = AppUtilService.defaultISOTime();
-  //   return customError;
-  // }
+  static getCustomError(code: string, message: string) {
+    const customError = new CustomErrorModel();
+    customError.code = code;
+    if (
+      !AppUtilService.isNullOrUndefined(code) &&
+      (code.includes("DB") ||
+        code.includes("REQ") ||
+        code.includes("CUSTOM") ||
+        code.includes("FILE"))
+    ) {
+      customError.status = 500;
+    } else if (
+      (!AppUtilService.isNullOrUndefined(code) && code.includes("HEADER")) ||
+      code.includes("VALIDATION")
+    ) {
+      customError.status = 400;
+    }
+    customError.message = message;
+    customError.timestamp = AppUtilService.defaultISOTime();
+    return customError;
+  }
 
   // static configureAxios(
   //   url,
@@ -86,28 +91,33 @@ export class AppConfigService {
   //   });
   // }
 
-  // static validationExceptionFactory(errors: ValidationError[]) {
-  //   const customError = new CustomErrorModel();
-  //   customError.code = "400";
-  //   customError.timestamp = AppUtilService.defaultISOTime();
+  static validationExceptionFactory(errors: ValidationError[]) {
+    const customError = new CustomErrorModel();
+    customError.code = "400";
+    customError.timestamp = AppUtilService.defaultISOTime();
 
-  //   customError.status = HttpStatus.BAD_REQUEST;
-  //   let errMessage: string = "";
-  //   errors.forEach(err => {
-  //     console.log(
-  //       "witnessing err tartgetm and err val",
-  //       err.target?.constructor?.name,
-  //       err.value
-  //     );
-  //     errMessage = errMessage === ""
-  //       ? AppConfigService.getValidationErrorMessage(err)
-  //       : errMessage
-  //           .concat(APP_CONSTANTS.CHAR.HYPHEN)
-  //           .concat(AppConfigService.getValidationErrorMessage(err));
-  //   });
+    customError.status = 400;
+    let errMessage: string = "";
+    errors.forEach(err => {
+      console.log(
+        "witnessing err tartgetm and err val",
+        err.target?.constructor?.name,
+        err.value
+      );
+      errMessage = errMessage === ""
+        ? AppConfigService.getValidationErrorMessage(err)
+        : errMessage
+            .concat(APP_CONSTANTS.CHAR.HYPEN)
+            .concat(AppConfigService.getValidationErrorMessage(err));
+    });
 
-  //   console.log("final Error message:", errMessage);
-  //   customError.message = errMessage;
-  //   throw customError;
-  // }
+    console.log("final Error message:", errMessage);
+    customError.message = errMessage;
+    throw customError;
+  }
+
+  static getValidationErrorMessage(err: ValidationError) {
+    return `Validation error occured - ${err.target.constructor.name} - for the prop - ${err.property}
+     - constraints - ${err.constraints}`;
+  }
 }
